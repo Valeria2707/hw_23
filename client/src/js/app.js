@@ -46,7 +46,6 @@ const showOrder = ()=>{
   .then(response => console.log(response));
 }
 
-
 const changeSizeHandler = function(event) {
   const size = event.target.value; 
   const btnT = document.querySelectorAll('.toppings');
@@ -104,7 +103,8 @@ fetch(API_CATEGORIES_LIST)
         'li',
         category.name, 
         {
-          'data-menu-item': category.id
+          'data-menu-item': category.id,
+          className: "li-header"
         },
         {
           click: menuItemClickHandler

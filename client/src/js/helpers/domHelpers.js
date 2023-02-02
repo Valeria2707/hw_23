@@ -36,7 +36,7 @@ export function createElement(tagName, content, attributes, eventHandlers, paren
 
 
 export function createProductCard(product, buyClickHandler) {
-  const parentElem = createElement('div', '', {className: 'product_card'}, null, '#content');
+  const parentElem = createElement('div', '', {className: 'product_card card mb-4 rounded-3 shadow-sm card-body col'}, null, '#content');
   createElement('h3', product.name, null, null, parentElem);
   createElement('p', `UAH ${product.price}`, null, null, parentElem);
   createElement(
@@ -46,6 +46,7 @@ export function createProductCard(product, buyClickHandler) {
       type: 'button',
       value: 'Buy',
       'data-product-id': product.id,
+      className: 'w-100 btn btn-lg btn-outline-primary'
     },
     {click: buyClickHandler},
     parentElem
@@ -66,10 +67,10 @@ export function createCheckoutForm(product, changeSizeHandler, changeToppingHand
   updateProductPrice(product.price);
   
 
-  createElement('p', product.name, {className: 'orderName'}, null, '#modal_details');
+  createElement('p', product.name, {className: 'orderName textBg'}, null, '#modal_details');
 
   const sizeP = createElement('p', '', null, null, '#modal_details');
-  createElement('h4', 'Size:', null, null, sizeP);
+  createElement('h4', 'Size:', {className: 'textBg'}, null, sizeP);
   // Radio "small"
   createElement(
     'input',
@@ -78,7 +79,7 @@ export function createCheckoutForm(product, changeSizeHandler, changeToppingHand
     { change: changeSizeHandler },
     sizeP
   );
-  createElement('span', 'Small', null, null, sizeP);
+  createElement('span', 'Small', {className: 'mg'}, null, sizeP);
   
   // Radio "big"
   createElement(
@@ -91,7 +92,7 @@ export function createCheckoutForm(product, changeSizeHandler, changeToppingHand
   createElement('span', 'Big', null, null, sizeP);
 
   const toppingsP = createElement('p', '', null, null, '#modal_details');
-  createElement('h4', 'Toppings:', null, null, toppingsP);
+  createElement('h4', 'Toppings:', {className: 'textBg'}, null, toppingsP);
 
   for(let topping of product.available_toppings) {
     const p = createElement('p', '', null, null, toppingsP);
@@ -99,13 +100,13 @@ export function createCheckoutForm(product, changeSizeHandler, changeToppingHand
     createElement('span', `${topping.name} UAH ${topping.price}`, null, null, p)
   }
 
-  const buttonsP = createElement('p', '', null, null, '#modal_details');
-  createElement('input', '', {type: 'text', name: 'client_name', placeholder: 'Enter your name', className: 'client_name'}, null, buttonsP);
-  createElement('input', '', {type: 'button', value: 'Order'}, {click: sendOrder}, buttonsP);
-  createElement('input', '', {type: 'button', value: 'Show Order'}, {click: showOrder}, buttonsP);
+  const buttonsP = createElement('p', '', {className: 'btnOrders'}, null, '#modal_details');
+  createElement('input', '', {type: 'text', name: 'client_name', placeholder: 'Enter your name', className: 'client_name inputCust'}, null, buttonsP);
+  createElement('input', '', {type: 'button', value: 'Order', className: 'btn btn-lg btn-primary '}, {click: sendOrder}, buttonsP);
+  createElement('input', '', {type: 'button', value: 'Show Order', className: 'btn btn-lg btn-primary '}, {click: showOrder}, buttonsP);
 }
 
 export function updateProductPrice(newPrice) {
   document.querySelector('#modal_price').innerHTML = '';
-  createElement('span', `UAH ${newPrice}`, {className: 'priceOrder'}, null, '#modal_price');
+  createElement('span', `UAH ${newPrice}`, {className: 'priceOrder textBg'}, null, '#modal_price');
 }

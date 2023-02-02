@@ -1,36 +1,56 @@
 @import "~bootstrap/scss/bootstrap";
 
-#menu {
-  border: 1px solid black;
-  height: 50px;
-  ul {
-    list-style-type: none;
-    display: flex;
-    justify-content: space-evenly;
-
-    li {
-      cursor: pointer;
-    }
-    li:hover {
-      text-decoration: underline;
-    }
-  }
+.p-3{
+  margin-bottom: 50px;
 }
 
-#content {
-  border: 1px solid black;
-  min-height: 500px;
-}
-
-#modal {
+.nav{
   display: flex;
   justify-content: space-between;
-  div {
-    flex-basis: 400px;
-  }
+  padding-left: 50px;
+  padding-right: 50px;
+  font-size: 24px;
+}
 
-  #modal_price {
-    font-weight: bold;
-    font-size: 24px;
-  }
+.li-header{
+  cursor: pointer;
+}
+
+.li-header:hover{
+  text-decoration: underline;
+}
+
+.btnOrders{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: center;
+}
+
+.jc{
+  display: flex;
+  justify-content: space-between;
+}
+
+.wdth-bg{
+  width: 70%;
+}
+
+.wdth-sm{
+  width: 30%;
+}
+
+.textBg{
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.inputCust{
+  border-radius: 10px;
+  height: 40px;
+  border: 1px solid gray;
+}
+
+.mg{
+  margin-right: 15px;
 }
