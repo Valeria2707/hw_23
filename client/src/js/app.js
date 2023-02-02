@@ -2,10 +2,50 @@ import '../scss/styles.scss';
 
 
 import { createCheckoutForm, createElement, createProductCard, updateProductPrice } from './helpers/domHelpers.js';
-import {API_CATEGORIES_LIST, API_PRODUCTS_BY_CATEGORY_ID} from './urls.js';
+import {API_CATEGORIES_LIST, API_PRODUCTS_BY_CATEGORY_ID, API_ORDERS_LIST} from './urls.js';
 
 let productsArr = [];
 let currentProduct = {};
+
+const sendOrder = () =>{
+  const orderName = document.querySelector('.orderName').innerText;
+  const orderPrice = document.querySelector('.priceOrder').innerText;
+  const orderSize = document.querySelector('input[name="size"]:checked').value;
+  const orderToping = document.querySelector('input[name="toppings"]:checked').value;
+  const orderCustumer = document.querySelector('.client_name').value;
+
+  if(orderCustumer.length > 0){
+    const obj = {
+      order:
+       {
+        name: orderName,
+        price: orderPrice,
+        size: orderSize,
+        topping: orderToping,
+        customer: orderCustumer
+      }
+    }
+  
+    fetch(API_ORDERS_LIST, {
+      method: 'POST',
+      body: JSON.stringify(obj),
+      headers: {
+        "Content-Type": "application/json"
+      },
+    })
+    .then(response => console.log(response));
+  }
+  else{
+    alert("Заповніть всі дані");
+  }
+}
+
+const showOrder = ()=>{
+  fetch(API_ORDERS_LIST)
+  .then(res => res.json())
+  .then(response => console.log(response));
+}
+
 
 const changeSizeHandler = function(event) {
   const size = event.target.value; 
@@ -35,7 +75,7 @@ const clickBuyHandler = function(event) {
   const productId = event.target.getAttribute('data-product-id'); // ok
   currentProduct = productsArr.find(product => product.id === productId);
   currentProduct.updatedPrice = currentProduct.price;
-  createCheckoutForm(currentProduct, changeSizeHandler, changeToppingHandler);
+  createCheckoutForm(currentProduct, changeSizeHandler, changeToppingHandler, sendOrder, showOrder);
 }
 
 const menuItemClickHandler = function(event) {

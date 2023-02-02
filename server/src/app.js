@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const categories = require('./categories.json');
 const products = require('./products.json');
+const orders = require('./orders.json');
 
 const app = express();
 app.use(cors());
@@ -19,5 +20,16 @@ app.get('/api/products/:category', function(request, response) {
   const productsByCategory = products[category] || [];
   response.send(200, JSON.stringify(productsByCategory));
 })
+
+app.get('/api/orders', function(request, response) {
+  response.send(200, orders);
+});
+
+app.post('/api/orders', (request, response) => {
+   const { order: newOrder } = request.body;
+   orders.push(newOrder);
+   console.dir(orders)
+   response.send('ok');
+ });
 
 app.listen(PORT);

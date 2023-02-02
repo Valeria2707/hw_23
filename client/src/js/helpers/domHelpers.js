@@ -60,13 +60,13 @@ export function createProductCard(product, buyClickHandler) {
   */
 }
 
-export function createCheckoutForm(product, changeSizeHandler, changeToppingHandler) {
+export function createCheckoutForm(product, changeSizeHandler, changeToppingHandler, sendOrder, showOrder) {
   document.querySelector('#modal_details').innerHTML = '';
   document.querySelector('#modal_price').innerHTML = '';
   updateProductPrice(product.price);
   
 
-  createElement('p', product.name, null, null, '#modal_details');
+  createElement('p', product.name, {className: 'orderName'}, null, '#modal_details');
 
   const sizeP = createElement('p', '', null, null, '#modal_details');
   createElement('h4', 'Size:', null, null, sizeP);
@@ -100,11 +100,12 @@ export function createCheckoutForm(product, changeSizeHandler, changeToppingHand
   }
 
   const buttonsP = createElement('p', '', null, null, '#modal_details');
-  createElement('input', '', {type: 'text', name: 'client_name', placeholder: 'Enter your name'}, null, buttonsP);
-  createElement('input', '', {type: 'button', value: 'Order'}, null, buttonsP);
+  createElement('input', '', {type: 'text', name: 'client_name', placeholder: 'Enter your name', className: 'client_name'}, null, buttonsP);
+  createElement('input', '', {type: 'button', value: 'Order'}, {click: sendOrder}, buttonsP);
+  createElement('input', '', {type: 'button', value: 'Show Order'}, {click: showOrder}, buttonsP);
 }
 
 export function updateProductPrice(newPrice) {
   document.querySelector('#modal_price').innerHTML = '';
-  createElement('span', `UAH ${newPrice}`, null, null, '#modal_price');
+  createElement('span', `UAH ${newPrice}`, {className: 'priceOrder'}, null, '#modal_price');
 }
