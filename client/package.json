@@ -4,7 +4,8 @@
   "description": "",
   "main": "webpack.BACKUP.js",
   "scripts": {
-    "start": "webpack serve"
+    "start": "webpack serve", 
+    "dev": "webpack"
   },
   "author": "",
   "license": "ISC",
