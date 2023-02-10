@@ -61,7 +61,7 @@ export function createProductCard(product, buyClickHandler) {
   */
 }
 
-export function createCheckoutForm(product, changeSizeHandler, changeToppingHandler, sendOrder, showOrder) {
+export function createCheckoutForm(product, sendOrder, showOrder, changePrice) {
   document.querySelector('#modal_details').innerHTML = '';
   document.querySelector('#modal_price').innerHTML = '';
   updateProductPrice(product.price);
@@ -76,7 +76,7 @@ export function createCheckoutForm(product, changeSizeHandler, changeToppingHand
     'input',
     '',
     { type: 'radio', name: 'size', value: 'small', checked: 'checked' },
-    { change: changeSizeHandler },
+    { change: changePrice },
     sizeP
   );
   createElement('span', 'Small', {className: 'mg'}, null, sizeP);
@@ -86,7 +86,7 @@ export function createCheckoutForm(product, changeSizeHandler, changeToppingHand
     'input',
     '',
     { type: 'radio', name: 'size', value: 'big' },
-    { change: changeSizeHandler },
+    { change: changePrice },
     sizeP
   );
   createElement('span', 'Big', null, null, sizeP);
@@ -96,7 +96,7 @@ export function createCheckoutForm(product, changeSizeHandler, changeToppingHand
 
   for(let topping of product.available_toppings) {
     const p = createElement('p', '', null, null, toppingsP);
-    createElement('input', '', { type: 'radio', name: 'toppings', value: topping.name, className:'toppings'}, {change: changeToppingHandler}, p);
+    createElement('input', '', { type: 'radio', name: 'toppings', value: topping.name, className:'toppings', checked: 'checked'}, {change: changePrice}, p);
     createElement('span', `${topping.name} UAH ${topping.price}`, null, null, p)
   }
 
@@ -104,6 +104,8 @@ export function createCheckoutForm(product, changeSizeHandler, changeToppingHand
   createElement('input', '', {type: 'text', name: 'client_name', placeholder: 'Enter your name', className: 'client_name inputCust'}, null, buttonsP);
   createElement('input', '', {type: 'button', value: 'Order', className: 'btn btn-lg btn-primary '}, {click: sendOrder}, buttonsP);
   createElement('input', '', {type: 'button', value: 'Show Order', className: 'btn btn-lg btn-primary '}, {click: showOrder}, buttonsP);
+
+  changePrice();
 }
 
 export function updateProductPrice(newPrice) {

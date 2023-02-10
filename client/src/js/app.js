@@ -8,36 +8,36 @@ let productsArr = [];
 let currentProduct = {};
 
 const sendOrder = () =>{
+  const orderCustumer = document.querySelector('.client_name').value;
+  const orderToping = document.querySelector('input[name="toppings"]:checked').value;
   const orderName = document.querySelector('.orderName').innerText;
   const orderPrice = document.querySelector('.priceOrder').innerText;
   const orderSize = document.querySelector('input[name="size"]:checked').value;
-  const orderToping = document.querySelector('input[name="toppings"]:checked').value;
-  const orderCustumer = document.querySelector('.client_name').value;
 
-  if(orderCustumer.length > 0){
-    const obj = {
-      order:
-       {
-        name: orderName,
-        price: orderPrice,
-        size: orderSize,
-        topping: orderToping,
-        customer: orderCustumer
-      }
+    if(orderCustumer.length <= 0){
+      alert("Заповніть всі дані");
     }
-  
-    fetch(API_ORDERS_LIST, {
-      method: 'POST',
-      body: JSON.stringify(obj),
-      headers: {
-        "Content-Type": "application/json"
-      },
-    })
-    .then(response => console.log(response));
-  }
-  else{
-    alert("Заповніть всі дані");
-  }
+    else{
+      const obj = {
+        order:
+         {
+          name: orderName,
+          price: orderPrice,
+          size: orderSize,
+          topping: orderToping,
+          customer: orderCustumer
+        }
+      }
+    
+      fetch(API_ORDERS_LIST, {
+        method: 'POST',
+        body: JSON.stringify(obj),
+        headers: {
+          "Content-Type": "application/json"
+        },
+      })
+      .then(response => console.log(response));
+    }
 }
 
 const showOrder = ()=>{
@@ -46,35 +46,45 @@ const showOrder = ()=>{
   .then(response => console.log(response));
 }
 
-const changeSizeHandler = function(event) {
-  const size = event.target.value; 
-  const btnT = document.querySelectorAll('.toppings');
-  if (size === 'big') {
-    currentProduct.updatedPrice = currentProduct.price * 1.2;
-  } else {
-    currentProduct.updatedPrice = currentProduct.price;
+class Hamburger{
+  constructor(size, stuffing){
+    this.size = size;
+    this.stuffing = stuffing;
   }
-  for(let i =0; i < btnT.length; i++){
-    btnT[i].checked = false;
+
+  static changeSizeHandlers() {
+    const orderSize = document.querySelector('input[name="size"]:checked').value;
+    return orderSize;
   }
-  updateProductPrice(currentProduct.updatedPrice);
+
+  static stuffingTp(){
+    const orderToping = document.querySelector('input[name="toppings"]:checked').value;
+    return orderToping;
+  }
+
+  calculatePrice(){
+    const topping = currentProduct.available_toppings.find(topping => topping.name === this.stuffing);
+
+    if (this.size === 'big' && topping) {
+      currentProduct.updatedPrice = currentProduct.price * 1.2 + topping.price;
+    } else if(this.size === 'small' && topping) {
+      currentProduct.updatedPrice = currentProduct.price + topping.price;
+    }
+    
+    return currentProduct.updatedPrice;
+  }
 }
 
-const changeToppingHandler = function(event) {
-  const toppingName = event.target.value;
-  const topping = currentProduct.available_toppings.find(topping => topping.name === toppingName);
-  let priceWithTopping = currentProduct.updatedPrice;
-  if(topping){
-    priceWithTopping +=  topping.price;
-  }
-  updateProductPrice(priceWithTopping);
+const changePrice = function() {
+  var hamburger = new Hamburger(Hamburger.changeSizeHandlers(), Hamburger.stuffingTp());
+  updateProductPrice(hamburger.calculatePrice());
 }
 
 const clickBuyHandler = function(event) {
   const productId = event.target.getAttribute('data-product-id'); // ok
   currentProduct = productsArr.find(product => product.id === productId);
   currentProduct.updatedPrice = currentProduct.price;
-  createCheckoutForm(currentProduct, changeSizeHandler, changeToppingHandler, sendOrder, showOrder);
+  createCheckoutForm(currentProduct, sendOrder, showOrder, changePrice);
 }
 
 const menuItemClickHandler = function(event) {
